@@ -1,0 +1,18 @@
+{
+    "name": "srk-grid/gridview",
+    "description": "this library create dynamic table view",
+    "type": "library",
+    "authors": [
+        {
+            "name": "reza sarlak",
+            "email": "rezasarlak.007@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SrkGrid\\GridView\\": "src"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
