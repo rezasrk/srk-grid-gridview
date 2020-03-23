@@ -22,11 +22,11 @@ class GridView
     public function __construct($data, $structure, $link = array(), $attrTr = array())
     {
         $this->data = $data;
-        $this->headColumn = (array_values($structure));
+        $this->headColumn = (array_keys($structure));
         array_unshift($this->headColumn, 'ردیف');
         if (count($link) != 0)
             array_push($this->headColumn, "فعالیت");
-        $this->indexResultQuery = array_keys($structure);
+        $this->indexResultQuery = array_values($structure);
         $this->link = $link;
         $this->attrTr = $attrTr;
     }
