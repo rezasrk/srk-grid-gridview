@@ -1,4 +1,5 @@
 <?php
+
 namespace SrkGrid\GridView;
 
 class GridView
@@ -58,9 +59,9 @@ class GridView
         $attribute = "";
         foreach ($attr as $key => $value) {
             if ($key == "color")
-                $attribute .= "style=background-color:" . $resultQuery->$value.str_repeat(' ','1');
+                $attribute .= "style=background-color:" . $resultQuery->$value . str_repeat(' ', '1');
             else
-                $attribute .= $key . "=" . $resultQuery->$value.str_repeat(' ','1');
+                $attribute .= $key . "=" . $resultQuery->$value . str_repeat(' ', '1');
         }
         return $attribute;
     }
@@ -77,7 +78,12 @@ class GridView
                 $this->grid .= "<tr {$attrTr}>";
                 $this->grid .= "<td>" . $row . "</td>";
                 foreach ($this->indexResultQuery as $item) {
-                    $this->grid .= "<td>" . $data->$item . "</td>";
+                    if (is_array($item)) {
+                        $property = $item[0];
+                        $this->grid .= "<td>" .call_user_func($item[1],$data->$property) . "</td>";
+                    } else {
+                        $this->grid .= "<td>" . $data->$item . "</td>";
+                    }
                 }
                 if (count($this->link) != 0)
                     $this->grid .= "<td>" . $this->setLinkActivity($data) . "</td>";
