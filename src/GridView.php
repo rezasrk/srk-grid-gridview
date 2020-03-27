@@ -71,7 +71,12 @@ class GridView
         $countColSpan = count($this->headColumn);
         $i = 1;
         $isPaginate = $this->isPaginate();
-        if ($this->data->count() != 0) {
+        if (is_array($this->data))
+            $countData = count($this->data);
+        else
+            $countData = $this->data->count();
+
+        if ($countData != 0) {
             foreach ($this->data as $data) {
                 $isPaginate ? $row = (($this->data->perPage()) * ($this->data->currentPage() - 1) + $i) : $row = $i;
                 $attrTr = $this->setAttrTr($this->attrTr, $data);
@@ -80,7 +85,7 @@ class GridView
                 foreach ($this->indexResultQuery as $item) {
                     if (is_array($item)) {
                         $property = $item[0];
-                        $this->grid .= "<td>" .call_user_func($item[1],$data->$property) . "</td>";
+                        $this->grid .= "<td>" . call_user_func($item[1], $data->$property) . "</td>";
                     } else {
                         $this->grid .= "<td>" . $data->$item . "</td>";
                     }
