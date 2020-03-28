@@ -96,7 +96,7 @@ class GridView
                 $i++;
             }
         } else {
-            $this->grid .= "<tr class='text-center'><td colspan='{$countColSpan}'>موردی برای نمایش بافت نشد!!</td></tr>";
+            $this->grid .= "<tr class='text-center'><td colspan='{$countColSpan}'>موردی برای نمایش یافت نشد!!</td></tr>";
         }
         $this->endTable();
         if ($isPaginate)
