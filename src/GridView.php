@@ -109,12 +109,21 @@ class GridView
         $attr = "";
         foreach ($this->link as $item) {
             (array_key_exists('bind', $item)) ? $bnd = $item['bind'] : $bnd = "";
+            (array_key_exists('innerHtml', $item)) ? $innerHtml = $item['innerHtml'] : $innerHtml = "";
             foreach ($item as $key => $value) {
                 (isset($bind->$bnd)) ? $set = $bind->$bnd : $set = '';
-                if (in_array($key, $this->validOption))
-                    $attr .= $key . "='" . str_replace('?', $set, $value) . "'";
+                if (in_array($key, $this->validOption)) {
+                    $bindData = explode('?', $value);
+                    if ($key == "href" && count($bindData) == 2)
+                        $attr .= $key . "='" . str_replace('?', $set, $value) . "'";
+                    elseif ($key == "href")
+                        $attr .= $key . "='" . str_replace('@', '?', $value) . $set . "'";
+                    else
+                        $attr = $key ."='".$value."'";
+                }
+
             }
-            $activities .= "<a {$attr}></a> ";
+            $activities .= "<a {$attr}>{$innerHtml}</a> ";
             $attr = "";
         }
         return $activities;
