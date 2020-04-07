@@ -17,7 +17,7 @@ class GridView
     protected $attrTr;
 
     protected $validOption = [
-        'href', 'class'
+        'href', 'class','title'
     ];
 
     public function __construct($data, $structure, $link = array(), $attrTr = array())
@@ -58,8 +58,8 @@ class GridView
     {
         $attribute = "";
         foreach ($attr as $key => $value) {
-            if ($key == "color")
-                $attribute .= "style=background-color:" . $resultQuery->$value . str_repeat(' ', '1');
+            if ($key == "color" && $resultQuery->$value != "")
+                $attribute .= "style=color:white;background-color:" . $resultQuery->$value . str_repeat(' ', '1');
             else
                 $attribute .= $key . "=" . $resultQuery->$value . str_repeat(' ', '1');
         }
