@@ -34,7 +34,7 @@ class GridView
 
     public function startTable()
     {
-        $this->grid = "<div class='row'><div class='col-md-12 table-responsive'><table class='table table-bordered table-sm'><thead class='thead-dark'><tr>";
+        $this->grid = "<hr><div class='row'><div class='col-md-12 table-responsive'><table class='table table-bordered table-sm'><thead class='thead-dark'><tr>";
 
     }
 
@@ -46,7 +46,7 @@ class GridView
         foreach ($headCol as $item) {
             $this->grid .= "<th>" . $item . "</th>";
         }
-        $this->grid .= "</tr>.</thead>";
+        $this->grid .= "</tr></thead>";
     }
 
     public function isPaginate()
