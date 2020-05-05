@@ -17,7 +17,7 @@ class GridView
     protected $attrTr;
 
     protected $validOption = [
-        'href', 'class','title'
+        'href', 'class', 'title'
     ];
 
     public function __construct($data, $structure, $link = array(), $attrTr = array())
@@ -66,6 +66,15 @@ class GridView
         return $attribute;
     }
 
+    public function createChainingProperty($data, $parameter = array())
+    {
+        foreach ($parameter as $item)
+            $data = $data->$item;
+
+        return $data;
+
+    }
+
     public function body()
     {
         $countColSpan = count($this->headColumn);
@@ -84,10 +93,11 @@ class GridView
                 $this->grid .= "<td>" . $row . "</td>";
                 foreach ($this->indexResultQuery as $item) {
                     if (is_array($item)) {
-                        $property = $item[0];
-                        $this->grid .= "<td>" . call_user_func($item[1], $data->$property) . "</td>";
+                        $resQuery = (strpos($item[0], '|') !== false) ? $this->createChainingProperty($data, explode('|', $item[0])) : $resQuery = $data->$item[0];
+                        (array_key_exists('1', $item)) ? $this->grid .= "<td>" . call_user_func($item[1], $resQuery) . "</td>" : $this->grid .= "<td>" . $resQuery . "</td>";
                     } else {
-                        $this->grid .= "<td>" . $data->$item . "</td>";
+                        $resQuery = (strpos($item, '|') !== false) ? $this->createChainingProperty($data, explode('|', $item)) : $resQuery = $data->$item;
+                        $this->grid .= "<td>" . $resQuery. "</td>";
                     }
                 }
                 if (count($this->link) != 0)
@@ -119,7 +129,7 @@ class GridView
                     elseif ($key == "href")
                         $attr .= $key . "='" . str_replace('@', '?', $value) . $set . "'";
                     else
-                        $attr = $key ."='".$value."'";
+                        $attr = $key . "='" . $value . "'";
                 }
 
             }
