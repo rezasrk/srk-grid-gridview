@@ -93,7 +93,12 @@ class GridView
                 $this->grid .= "<td>" . $row . "</td>";
                 foreach ($this->indexResultQuery as $item) {
                     if (is_array($item)) {
-                        $resQuery = (strpos($item[0], '|') !== false) ? $this->createChainingProperty($data, explode('|', $item[0])) : $resQuery = $data->$item[0];
+                        if(strpos($item[0], '|') !== false) {
+                            $resQuery =     $this->createChainingProperty($data, explode('|', $item[0]));
+                        }else{
+                            $ss = $item[0];
+                            $resQuery = $data->$ss;
+                        }
                         (array_key_exists('1', $item)) ? $this->grid .= "<td>" . call_user_func($item[1], $resQuery) . "</td>" : $this->grid .= "<td>" . $resQuery . "</td>";
                     } else {
                         $resQuery = (strpos($item, '|') !== false) ? $this->createChainingProperty($data, explode('|', $item)) : $resQuery = $data->$item;
@@ -129,7 +134,7 @@ class GridView
                     elseif ($key == "href")
                         $attr .= $key . "='" . str_replace('@', '?', $value) . $set . "'";
                     else
-                        $attr = $key . "='" . $value . "'";
+                        $attr .= $key . "='" . $value . "'";
                 }
 
             }
