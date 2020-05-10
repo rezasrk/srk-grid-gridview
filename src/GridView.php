@@ -69,9 +69,10 @@ class GridView
     public function createChainingProperty($data, $parameter = array())
     {
         foreach ($parameter as $item)
+            if(isset($data->$item))
             $data = $data->$item;
 
-        return $data;
+        return (is_object($data)) ? null : $data;
 
     }
 
@@ -93,16 +94,16 @@ class GridView
                 $this->grid .= "<td>" . $row . "</td>";
                 foreach ($this->indexResultQuery as $item) {
                     if (is_array($item)) {
-                        if(strpos($item[0], '|') !== false) {
-                            $resQuery =     $this->createChainingProperty($data, explode('|', $item[0]));
-                        }else{
+                        if (strpos($item[0], '|') !== false) {
+                            $resQuery = $this->createChainingProperty($data, explode('|', $item[0]));
+                        } else {
                             $ss = $item[0];
                             $resQuery = $data->$ss;
                         }
                         (array_key_exists('1', $item)) ? $this->grid .= "<td>" . call_user_func($item[1], $resQuery) . "</td>" : $this->grid .= "<td>" . $resQuery . "</td>";
                     } else {
                         $resQuery = (strpos($item, '|') !== false) ? $this->createChainingProperty($data, explode('|', $item)) : $resQuery = $data->$item;
-                        $this->grid .= "<td>" . $resQuery. "</td>";
+                        $this->grid .= "<td>" . $resQuery . "</td>";
                     }
                 }
                 if (count($this->link) != 0)
