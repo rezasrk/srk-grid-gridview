@@ -2,165 +2,145 @@
 
 namespace SrkGrid\GridView;
 
-class GridView
+use SrkGrid\GridView\Html\TableElement;
+use SrkGrid\GridView\Options\Options;
+use SrkGrid\GridView\ProcessData\Paginate;
+use SrkGrid\GridView\ProcessElement\ProcessElement;
+
+class GridView extends TableElement
 {
-    protected $grid;
+    use Options, Paginate, ProcessElement;
 
-    protected $headColumn;
+    /**
+     * elements of header table
+     *
+     * @var array
+     */
 
+    protected $headerTables = [];
+
+    /**
+     * store string html tag table
+     *
+     * @var string
+     */
+    protected $table = "";
+
+    /**
+     * create <th>value</th>
+     *
+     * @param $headerTables
+     * @return $this
+     */
+    public function headerColumns($headerTables)
+    {
+        $this->headerTables = $headerTables;
+
+        return $this;
+    }
+
+    /**
+     * create header table
+     *
+     * @return string
+     */
+    protected function createHeadTable()
+    {
+        if (!empty($this->headerRowIndex))
+            $this->headNameColumns = array_merge($this->headerRowIndex, $this->headNameColumns);
+
+        $th = "";
+        collect($this->headNameColumns)->each(function ($name) use (&$th) {
+            $th .= $this->th($name);
+        });
+
+        return $this->thead($this->tr($th));
+    }
+
+    /**
+     * create td tag table
+     * @param $data
+     * @return string
+     */
+    protected function createTdTable($data)
+    {
+        $td = "";
+        foreach ($this->bodyTable as $tdTbl) {
+            if (is_array($tdTbl) && isset($tdTbl['incrementRow']))
+                $td .= $this->td($tdTbl['incrementRow'] + $this->increment);
+            else
+                $td .= $this->td($tdTbl instanceof \Closure ? $tdTbl->call($data, $data) : ($data->$tdTbl));
+        }
+        return $td;
+    }
+
+    /**
+     * create body table
+     *
+     * @return string
+     */
+    protected function createBodyTable()
+    {
+        $tr = "";
+        foreach ($this->data as $data) {
+            if (!empty($this->anyRowAttribute))
+                $this->trAttribute = $this->anyRowAttribute->call($data, $data);
+
+            $tr .= $this->tr($this->createTdTable($data));
+
+            $this->increment++;
+        }
+
+        return $this->tbody($tr);
+    }
+
+    /**
+     * store result query from eloquent or query builder
+     *
+     * @var object
+     */
     protected $data;
 
-    protected $indexResultQuery;
-
-    protected $link;
-
-    protected $attrTr='';
-
-    protected $validOption = [
-        'href', 'class', 'title'
-    ];
-
-    public function __construct($data, $structure, $link = array(), $attrTr = array())
+    /**
+     * create GridView.
+     * @param $data
+     */
+    public function __construct($data)
     {
         $this->data = $data;
-        $this->headColumn = (array_keys($structure));
-        array_unshift($this->headColumn, 'ردیف');
-        if (count($link) != 0)
-            array_push($this->headColumn, "فعالیت");
-        $this->indexResultQuery = array_values($structure);
-        $this->link = $link;
-        $this->attrTr = $attrTr;
     }
 
-    public function startTable()
+    /**
+     * render grid
+     *
+     * @return string
+     */
+    public function renderGrid()
     {
-        $this->grid = "<hr><div class='row'><div class='col-md-12 table-responsive'><table class='table table-bordered table-sm'><thead class='thead-dark'><tr>";
-
+        $this->paginate();
+        return $this->makeTable() . $this->linkPage();
     }
 
-    public function headColumn()
+    /**
+     * create table
+     *
+     * @return string
+     */
+    protected function makeTable()
     {
-        $headCol = $this->headColumn;
-        $this->startTable();
+        $this->processTable();
 
-        foreach ($headCol as $item) {
-            $this->grid .= "<th>" . $item . "</th>";
-        }
-        $this->grid .= "</tr></thead>";
-    }
+        /** create header table ( columns ) */
+        $this->table .= $this->createHeadTable();
 
-    public function isPaginate()
-    {
-        return method_exists($this->data, 'perPage') && method_exists($this->data, 'currentPage') ? true : false;
-    }
+        /** add row increment  */
+        if ($this->hasRowIndex)
+            $this->incrementRow();
 
-    public function setAttrTr($attr, $resultQuery)
-    {
-        $attribute = "";
-        foreach ($attr as $key => $value) {
-            if ($key == "color" && $resultQuery->$value != "")
-                $attribute .= "style=color:white;background-color:" . $resultQuery->$value . str_repeat(' ', '1');
-            else
-                $attribute .= $key . "=" . $resultQuery->$value . str_repeat(' ', '1');
-        }
-        return $attribute;
-    }
+        /** create body table  ( rows )*/
+        $this->table .= $this->data->count() > 0 ? $this->createBodyTable() : $this->emptyTd();
 
-    public function createChainingProperty($data, $parameter = array())
-    {
-        foreach ($parameter as $item)
-            if(isset($data->$item))
-            $data = $data->$item;
-
-        return (is_object($data)) ? null : $data;
-
-    }
-
-    public function body()
-    {
-        $countColSpan = count($this->headColumn);
-        $i = 1;
-        $isPaginate = $this->isPaginate();
-        if (is_array($this->data))
-            $countData = count($this->data);
-        else
-            $countData = $this->data->count();
-
-        if ($countData != 0) {
-            foreach ($this->data as $data) {
-                $isPaginate ? $row = (($this->data->perPage()) * ($this->data->currentPage() - 1) + $i) : $row = $i;
-                $attrTr = $this->setAttrTr($this->attrTr, $data);
-                $this->grid .= "<tr {$attrTr}>";
-                $this->grid .= "<td>" . $row . "</td>";
-                foreach ($this->indexResultQuery as $item) {
-                    if (is_array($item)) {
-                        if (strpos($item[0], '|') !== false) {
-                            $resQuery = $this->createChainingProperty($data, explode('|', $item[0]));
-                        } else {
-                            $ss = $item[0];
-                            $resQuery = $data->$ss;
-                        }
-                        (array_key_exists('1', $item)) ? $this->grid .= "<td>" . call_user_func($item[1], $resQuery) . "</td>" : $this->grid .= "<td>" . $resQuery . "</td>";
-                    } else {
-                        $resQuery = (strpos($item, '|') !== false) ? $this->createChainingProperty($data, explode('|', $item)) : $resQuery = $data->$item;
-                        $this->grid .= "<td>" . $resQuery . "</td>";
-                    }
-                }
-                if (count($this->link) != 0)
-                    $this->grid .= "<td>" . $this->setLinkActivity($data) . "</td>";
-                $this->grid .= "</tr>";
-                $i++;
-            }
-        } else {
-            $this->grid .= "<tr class='text-center'><td colspan='{$countColSpan}'>موردی برای نمایش یافت نشد!!</td></tr>";
-        }
-        $this->endTable();
-        if ($isPaginate)
-            $this->setPaginate();
-    }
-
-    public function setLinkActivity($bind)
-    {
-        $activities = "";
-        $attr = "";
-        foreach ($this->link as $item) {
-            (array_key_exists('bind', $item)) ? $bnd = $item['bind'] : $bnd = "";
-            (array_key_exists('innerHtml', $item)) ? $innerHtml = $item['innerHtml'] : $innerHtml = "";
-            foreach ($item as $key => $value) {
-                (isset($bind->$bnd)) ? $set = $bind->$bnd : $set = '';
-                if (in_array($key, $this->validOption)) {
-                    $bindData = explode('?', $value);
-                    if ($key == "href" && count($bindData) == 2)
-                        $attr .= $key . "='" . str_replace('?', $set, $value) . "'";
-                    elseif ($key == "href")
-                        $attr .= $key . "='" . str_replace('@', '?', $value) . $set . "'";
-                    else
-                        $attr .= $key . "='" . $value . "'";
-                }
-
-            }
-            $activities .= "<a {$attr}>{$innerHtml}</a> ";
-            $attr = "";
-        }
-        return $activities;
-    }
-
-
-    public function setPaginate()
-    {
-        $this->grid .= $this->data->appends(request()->query())->render();
-    }
-
-    public function render()
-    {
-        $this->headColumn();
-        $this->body();
-        return $this->grid;
-    }
-
-    public function endTable()
-    {
-        $this->grid .= "</table></div></div>";
+        return $this->table($this->table);
     }
 
 }
