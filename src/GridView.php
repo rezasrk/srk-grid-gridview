@@ -14,7 +14,7 @@ class GridView
 
     protected $link;
 
-    protected $attrTr;
+    protected $attrTr='';
 
     protected $validOption = [
         'href', 'class', 'title'
