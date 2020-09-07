@@ -1,5 +1,7 @@
 # srk-grid-gridview
 
+this package help you to create dynamic html table by php language in framework laravel  
+
 # Requirements
     bootstrap >=3
     laravel >= 5.x
@@ -17,7 +19,7 @@ create object from GridView and pass query builder or eloquent of laravel withou
 ```php
 $date = new GridView(User::query())
 
-$data->headerColumns([
+$grid = $data->headerColumns([
     ['head'=>'name],
     ['head'=>'username'],
 ])
@@ -27,6 +29,10 @@ $data->headerColumns([
 
 ```
 
+and put $grid yourself application  view
+```php
+{!! $grid !!}
+```
 ### custom number paginate
 by default number of paginate for gird equal 20
 but if you need to change it use  
