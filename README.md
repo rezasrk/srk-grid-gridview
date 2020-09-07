@@ -1,87 +1,105 @@
 # srk-grid-gridview
 
-# installation 
+# Requirements
+    bootstrap >=3
+    laravel >= 5.x
+    php >= 7.x
+    
+# Installation
 
 ` composer require srk-grid/gridview `
 
-# example 
- $data is result queryBuilder or eloquent orm in laravel 
- 
- 
- A)
-```php
+# Usage
+this package support eloquent and query builder of laravel 
 
-$grid = new GridView($data,[
-           'عنوان' =>'fst_title',
-        ],[
-            ['class'=>'btn btn-primary','href'=>route('festivalStartRegister').'@festivalId=','bind'=>'fst_id','innerHtml'=>'ثبت  نام جشنواره']
-        ]);
-        return $grid->render();
-
-```
-result above code 
-
-```html
-
-<table class="table table-bordered table-sm">
-  <thead class="thead-dark">
-    <tr>
-      <th>ردیف</th>
-      <th>عنوان</th>
-      <th>فعالیت</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>یازدهمین دوره ی جشنوراه نانو</td>
-      <td><a class="btn btn-primary" href="http://127.0.0.1:8000/festival/register?festivalId=2">ثبت  نام جشنواره</a> 
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-```
-
-B)
+create object from GridView and pass query builder or eloquent of laravel without terminate method like paginate , get , first .
 
 ```php
-  $view = new GridView($data,
-            [
-                'عنوان جشنواره' => 'fst_title'
-            ], [
-                ['class' => 'fa fa-calendar text-dark showFestivalTime'],
-                ['class' => 'fa fa-pencil text-dark', 'href' => route('festival.edit', '?'), 'bind' => 'fst_id'],
-            ], ['data-id' => 'fst_id']
-        );
-        return $view->render();
+$date = new GridView(User::query())
+
+$data->headerColumns([
+    ['head'=>'name],
+    ['head'=>'username'],
+])
+->addColumns('name')
+->addColumns('username')
+->renderGrid();
+
+```
+
+### custom number paginate
+by default number of paginate for gird equal 20
+but if you need to change it use  
+```php 
+setPaginateNumber(customNumber) 
+``` 
+
+
+### use closure in method addColumns
+if use eloquent relation you  need to use closure in method addColumns for show result 
+```php
+->addColumns(function($query){
+    $query->person->national_code;
+})
+``` 
+
+
+### disable column
+if you need to disable column can use 
+```php
+disable=>false 
+```
+in headColumns method
+
+```php
+->headerColumns([
+    ['head'=>'name],
+    ['head'=>'username','disable'=>false],
+    ['head'=>'national code'],
+])
 ```
 
 
-result above code
-
-```html
-<table class="table table-bordered table-sm">
-  <thead class="thead-dark">
-    <tr>
-      <th>ردیف</th>
-      <th>عنوان جشنواره</th>
-      <th>فعالیت</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr data-id="2">
-      <td>1</td>
-      <td>یازدهمین دوره ی جشنوراه نانو</td>
-      <td>
-        <a class="fa fa-calendar text-dark showFestivalTime"></a> 
-        <a class="fa fa-pencil text-dark" href="http://127.0.0.1:8000/admin/festival/2/edit"></a> 
-      </td>
-    </tr>
-  </tbody>
-</table>
-
+### use row increment
+if you need to use row increment can you use 
+```php
+->rowIndex()
 ```
+
+
+### set attribute for any row 
+
+if you need to set attribute for any row can use 
+
+```php
+->anyRowAttribute(function($query){
+    if($query->email == 'admin')
+        return "style='background-color:red'";
+})
+```
+the result above code any row to email equal admin  set background color red 
+
+
+### add attribute for thead tbody table
+ 
+set attribute for table
+```php
+setTableAttribute(['class'=>'class-name','id'=>'id-name'])
+```
+ 
+set attribute for thead 
+```php
+->setTrAttribute(['class' => 'class-name','id'='id-name'])
+``` 
+
+set attribute for tbody
+```php
+->setTheadAttribute(['class' => 'class-name','id'=>'id-name'])
+```
+
+
+
+
 
 
 
