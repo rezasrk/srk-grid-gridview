@@ -106,6 +106,14 @@ set attribute for tbody
 
 
 
+### sort able columns
+if you need to sort data can add sortAble in head columns by property sort
+```php
+$data->headerColumns(['head'=>'username','sortAble'=>'username'])
+```
+
+
+
 
 
 
