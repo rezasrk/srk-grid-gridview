@@ -6,7 +6,6 @@ use SrkGrid\GridView\Html\TableElement;
 use SrkGrid\GridView\Options\Options;
 use SrkGrid\GridView\ProcessData\Paginate;
 use SrkGrid\GridView\ProcessElement\ProcessElement;
-
 class GridView extends TableElement
 {
     use Options, Paginate, ProcessElement;
@@ -50,7 +49,11 @@ class GridView extends TableElement
             $this->headNameColumns = array_merge($this->headerRowIndex, $this->headNameColumns);
 
         $th = "";
-        collect($this->headNameColumns)->each(function ($name) use (&$th) {
+
+        collect($this->headNameColumns)->each(function ($name, $index) use (&$th) {
+
+            $this->setHeaderLinkSort($name, $index);
+
             $th .= $this->th($name);
         });
 
@@ -69,7 +72,7 @@ class GridView extends TableElement
             if (is_array($tdTbl) && isset($tdTbl['incrementRow']))
                 $td .= $this->td($tdTbl['incrementRow'] + $this->increment);
             else
-                $td .= $this->td($tdTbl instanceof \Closure ? $tdTbl->call($data, $data) : ($data->$tdTbl));
+                $td .= $this->td($tdTbl instanceof \Closure ? call_user_func($tdTbl, $data) : ($data->$tdTbl));
         }
         return $td;
     }
@@ -117,9 +120,14 @@ class GridView extends TableElement
      */
     public function renderGrid()
     {
+        $this->setSortData();
+
         $this->paginate();
+
         return $this->makeTable() . $this->linkPage();
     }
+
+
 
     /**
      * create table

@@ -1,9 +1,11 @@
 <?php
 
 namespace SrkGrid\GridView\ProcessElement;
+use SrkGrid\GridView\ProcessData\Sort;
 
 trait ProcessElement
 {
+    use Sort;
     /**
      * for store disable column index number
      *
@@ -57,6 +59,8 @@ trait ProcessElement
         collect($this->headerTables)->each(function ($value, $index) {
 
             $this->disableColumns($value, $index);
+
+            $this->sortAbleColumns($value, $index);
 
             $this->headerNameColumns($value);
 
