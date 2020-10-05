@@ -3,9 +3,9 @@
 this package help you to create dynamic html table by php language in framework laravel  
 
 # Requirements
-    bootstrap >=3
-    laravel >= 5.x
+    laravel >= 5.6
     php >= 7.x
+    phpspreadsheet >= 1.14
     
 # Installation
 
