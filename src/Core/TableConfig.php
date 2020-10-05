@@ -1,54 +1,104 @@
 <?php
 
-namespace SrkGrid\GridView\ProcessElement;
+namespace SrkGrid\GridView\Core;
 
-
-use SrkGrid\GridView\Helper;
-
-trait Attribute
+trait TableConfig
 {
+    /**
+     * @var array
+     */
+    protected $parentTableAttribute = [];
     /**
      * attribute for table tag
      *
-     * @var string
+     * @var array
      */
-    protected $tableAttribute = "class='table table-bordered'";
+    protected $tableAttribute = ["class" => "table table-striped"];
+
     /**
      * attribute for thead tag
      *
-     * @var string
+     * @var array
      */
     protected $theadAttribute;
+
     /**
      * attribute for tbody tag
      *
      * @var array
      */
     protected $tbodyAttribute;
+
     /**
      * attribute for tr tag
      *
      * @var array
      */
     protected $trAttribute;
+
     /**
      * attribute for th tag
      *
-     * @var string
+     * @var array
      */
+
     protected $thAttribute;
     /**
      * attribute for td tag
      *
-     * @var string
+     * @var array
      */
+
     protected $tdAttribute;
     /**
      * set condition or attribute for any row
      *
      * @var
      */
+
     protected $anyRowAttribute = null;
+    /**
+     * use increment row
+     *
+     * @var bool
+     */
+    protected $hasRowIndex = false;
+
+    /**
+     * @param array $attribute
+     * @return $this
+     */
+    public function setParentTableAttribute($attribute)
+    {
+        $this->parentTableAttribute = $attribute;
+
+        return $this;
+    }
+
+    /**
+     * set increment row
+     *
+     * @return $this
+     */
+    public function rowIndex()
+    {
+        $this->headerRowIndex = ['head' => '#'];
+
+        $this->hasRowIndex = true;
+
+        return $this;
+    }
+
+    /**
+     * message empty  data
+     *
+     * @return string
+     */
+    protected function messageEmpty()
+    {
+        return "empty data!";
+    }
+
 
     /**
      * set attribute for table
@@ -58,7 +108,8 @@ trait Attribute
      */
     public function setTableAttribute($attributes)
     {
-        $this->tableAttribute = Helper::getAttribute($attributes);
+        $this->tableAttribute = $attributes;
+
         return $this;
     }
 
@@ -70,7 +121,8 @@ trait Attribute
      */
     public function setTheadAttribute($attributes)
     {
-        $this->theadAttribute = Helper::getAttribute($attributes);
+        $this->theadAttribute = $attributes;
+
         return $this;
     }
 
@@ -82,7 +134,8 @@ trait Attribute
      */
     public function setTbodyAttribute($attributes)
     {
-        $this->tbodyAttribute = Helper::getAttribute($attributes);
+        $this->tbodyAttribute = $attributes;
+
         return $this;
     }
 
@@ -94,7 +147,8 @@ trait Attribute
      */
     public function setTrAttribute(array $attributes)
     {
-        $this->trAttribute = Helper::getAttribute($attributes);
+        $this->trAttribute = $attributes;
+
         return $this;
     }
 
@@ -107,6 +161,8 @@ trait Attribute
     public function anyRowAttribute(\Closure $fallback)
     {
         $this->anyRowAttribute = $fallback;
+
         return $this;
     }
+
 }

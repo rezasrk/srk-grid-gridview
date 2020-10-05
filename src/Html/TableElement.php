@@ -4,11 +4,13 @@
 namespace SrkGrid\GridView\Html;
 
 
-use App\Library\GridView\ProcessElement\Attribute;
+use SrkGrid\GridView\Core\TableConfig;
+use SrkGrid\GridView\Helper;
+
 
 class TableElement
 {
-    use Attribute;
+    use TableConfig;
 
     /**
      * create table html tag
@@ -18,7 +20,10 @@ class TableElement
      */
     protected function table($innerHtml)
     {
-        return "<table {$this->tableAttribute}> " . $innerHtml . "</table>";
+
+        $attr = Helper::getAttribute($this->tableAttribute);
+
+        return "<table {$attr}> " . $innerHtml . "</table>";
     }
 
     /**
@@ -29,7 +34,9 @@ class TableElement
      */
     protected function thead($innerHtml)
     {
-        return "<thead {$this->theadAttribute}>" . $innerHtml . "</thead>";
+        $attr = Helper::getAttribute($this->theadAttribute);
+
+        return "<thead {$attr}>" . $innerHtml . "</thead>";
     }
 
     /**
@@ -40,7 +47,9 @@ class TableElement
      */
     protected function tbody($innerHtml)
     {
-        return "<tbody {$this->tbodyAttribute}>" . $innerHtml . "</tbody>";
+        $attr = Helper::getAttribute($this->tbodyAttribute);
+
+        return "<tbody {$attr}>" . $innerHtml . "</tbody>";
     }
 
     /**
@@ -51,7 +60,9 @@ class TableElement
      */
     protected function tr($innerHtml)
     {
-        return "<tr {$this->trAttribute}>" . $innerHtml . "</tr>";
+        $attr = Helper::getAttribute($this->trAttribute);
+
+        return "<tr {$attr}>" . $innerHtml . "</tr>";
     }
 
     /**
@@ -62,7 +73,9 @@ class TableElement
      */
     protected function th($innerHtml)
     {
-        return "<th {$this->thAttribute}>" . $innerHtml . "</th>";
+        $attr = Helper::getAttribute($this->thAttribute);
+
+        return "<th {$attr}>" . $innerHtml . "</th>";
     }
 
     /**

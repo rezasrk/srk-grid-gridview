@@ -13,9 +13,12 @@ class Helper
      */
     public static function getAttribute($attributes)
     {
-        $attr = '';
-        foreach ($attributes as $key => $value)
-            $attr .= $key . '=' . $value . ' ';
-        return $attr;
+        if(is_array($attributes)){
+            $attr = '';
+            foreach ($attributes as $key => $value)
+                $attr .= $key . '="' . $value . '" ';
+            return $attr;
+        }
+
     }
 }

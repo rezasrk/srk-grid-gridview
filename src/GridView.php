@@ -2,100 +2,15 @@
 
 namespace SrkGrid\GridView;
 
+use SrkGrid\GridView\Excel\ExportExcel;
+use SrkGrid\GridView\Html\RawHtml;
 use SrkGrid\GridView\Html\TableElement;
 use SrkGrid\GridView\Options\Options;
-use SrkGrid\GridView\ProcessData\Paginate;
-use SrkGrid\GridView\ProcessElement\ProcessElement;
+use SrkGrid\GridView\Table\Table;
+
 class GridView extends TableElement
 {
-    use Options, Paginate, ProcessElement;
-
-    /**
-     * elements of header table
-     *
-     * @var array
-     */
-
-    protected $headerTables = [];
-
-    /**
-     * store string html tag table
-     *
-     * @var string
-     */
-    protected $table = "";
-
-    /**
-     * create <th>value</th>
-     *
-     * @param $headerTables
-     * @return $this
-     */
-    public function headerColumns($headerTables)
-    {
-        $this->headerTables = $headerTables;
-
-        return $this;
-    }
-
-    /**
-     * create header table
-     *
-     * @return string
-     */
-    protected function createHeadTable()
-    {
-        if (!empty($this->headerRowIndex))
-            $this->headNameColumns = array_merge($this->headerRowIndex, $this->headNameColumns);
-
-        $th = "";
-
-        collect($this->headNameColumns)->each(function ($name, $index) use (&$th) {
-
-            $this->setHeaderLinkSort($name, $index);
-
-            $th .= $this->th($name);
-        });
-
-        return $this->thead($this->tr($th));
-    }
-
-    /**
-     * create td tag table
-     * @param $data
-     * @return string
-     */
-    protected function createTdTable($data)
-    {
-        $td = "";
-        foreach ($this->bodyTable as $tdTbl) {
-            if (is_array($tdTbl) && isset($tdTbl['incrementRow']))
-                $td .= $this->td($tdTbl['incrementRow'] + $this->increment);
-            else
-                $td .= $this->td($tdTbl instanceof \Closure ? call_user_func($tdTbl, $data) : ($data->$tdTbl));
-        }
-        return $td;
-    }
-
-    /**
-     * create body table
-     *
-     * @return string
-     */
-    protected function createBodyTable()
-    {
-        $tr = "";
-        foreach ($this->data as $data) {
-            if (!empty($this->anyRowAttribute))
-                $this->trAttribute = $this->anyRowAttribute->call($data, $data);
-
-            $tr .= $this->tr($this->createTdTable($data));
-
-            $this->increment++;
-        }
-
-        return $this->tbody($tr);
-    }
+    use  Options,Table, ExportExcel;
 
     /**
      * store result query from eloquent or query builder
@@ -120,13 +35,8 @@ class GridView extends TableElement
      */
     public function renderGrid()
     {
-        $this->setSortData();
-
-        $this->paginate();
-
-        return $this->makeTable() . $this->linkPage();
+        return $this->makeGrid();
     }
-
 
 
     /**
@@ -134,21 +44,23 @@ class GridView extends TableElement
      *
      * @return string
      */
-    protected function makeTable()
+    protected function makeGrid()
     {
-        $this->processTable();
+        /** process element table for disable column create head column */
+        $this->coreProcess();
 
-        /** create header table ( columns ) */
-        $this->table .= $this->createHeadTable();
+        $this->downloadExcel();
 
-        /** add row increment  */
-        if ($this->hasRowIndex)
-            $this->incrementRow();
-
-        /** create body table  ( rows )*/
-        $this->table .= $this->data->count() > 0 ? $this->createBodyTable() : $this->emptyTd();
-
-        return $this->table($this->table);
+        return $this->setParentTable();
     }
 
+    protected function setParentTable()
+    {
+        /** @var RawHtml $rawHtml */
+        $rawHtml = Factory::make(RawHtml::class);
+
+        $table = $this->createButtonExcel() . $this->createTable();
+
+        return $rawHtml->startDiv($this->parentTableAttribute, $table)->endDiv()->getHtml();
+    }
 }
