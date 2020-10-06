@@ -39,8 +39,13 @@ and put $table yourself view
 
 # Introduction
 
-you can customize default config in file srkgridview.php in directory config in laravel 
-these config include three part  (table - excel - paginate) 
+this package compatible by eloquent and query builder of laravel 
+
+by default next run command vendor:publish  automatic create srkgridview.php in directory config in laravel
+all table config exists in php file and you can customize default config  
+
+this config include three part  (table - excel - paginate) for set attribute on html element of table
+and excel element and paginate element and  set paginate number for result query and etc 
 
 also for any table you can change all config exists in file srkgridview.php
 
@@ -51,21 +56,21 @@ you must call three method to create table ` ->headerColumns() ` and ` ->addColu
 
 ### ->headerColumns()
 
-this method  create header of table at the its received array inside another array as input 
+this method  create header of table its received array inside another array as input 
  
 at the moment internal array has three key 
 
 ` head ` and ` disbale ` and ` disableExcel `
 
-##### head
+#### head
 
 this key for create name of column 
 
-##### disable
+#### disable
 
 this key for hidden column if `  ['disable'=>false] `
 
-##### disableExcel 
+#### disableExcel 
 
 this key for hidden column if  ` ['disableExcel'=>false] `
 
