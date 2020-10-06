@@ -81,15 +81,23 @@ return [
     ],
 
 
-
-   /*---------------------------------------------------------------------------
-   * Default config for paginate
-   * --------------------------------------------------------------------------
-   */
-   'paginate'=>[
-       'increment'=>'1',
-       'paginate'=>'20',
-       'parentPaginateAttribute'=>['class' => 'ajax-grid mt-2 ml-2'],
-   ]
+    /*---------------------------------------------------------------------------
+    * Default config for paginate
+    * --------------------------------------------------------------------------
+    */
+    'paginate' => [
+        /**
+         * Set default increment row table
+         */
+        'increment' => '1',
+        /**
+         * Set default paginate number
+         */
+        'paginate' => '20',
+        /**
+         * Set default attribute for patent link paginate
+         */
+        'parentPaginateAttribute' => ['class' => 'ajax-grid mt-2 ml-2'],
+    ]
 
 ];
