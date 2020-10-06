@@ -41,7 +41,7 @@ and put $table yourself view
 
 this package compatible by eloquent and query builder of laravel 
 
-**you must write query by eloquent or query builder without terminate method like ` paginate() ` or ` get ` or ` all() `  or etc**
+**you must write query by eloquent or query builder without terminate method like ` paginate() ` or ` get() ` or ` all() `  or etc**
  
 by default next run command ` php artisan vendor:publish --provider="SrkGrid\GridView\SrkGridViewProvider" `  automatic create srkgridview.php in directory config in laravel
 all table config exists in php file and you can customize default config  
