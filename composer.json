@@ -1,21 +1,28 @@
 {
-    "name": "srk-grid/gridview",
-    "description": "this library create dynamic table view",
-    "type": "library",
-    "authors": [
-        {
-            "name": "reza sarlak",
-            "email": "rezasarlak.007@gmail.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "SrkGrid\\GridView\\": "src"
-        }
-    },
-    "minimum-stability": "dev",
-    "require": {
-        "laravel/framework": "^5.6",
-        "phpoffice/phpspreadsheet": "^1.14"
+  "name": "srk-grid/gridview",
+  "description": "simple create table compatible by eloquent and query builder of laravel ",
+  "type": "library",
+  "authors": [
+    {
+      "name": "reza sarlak",
+      "email": "rezasarlak.007@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "SrkGrid\\GridView\\": "src"
+    }
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "laravel/framework": "^5.6",
+    "phpoffice/phpspreadsheet": "^1.14"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "SrkGrid\\GridView\\SrkGridViewProvider"
+      ]
+    }
+  }
 }

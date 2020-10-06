@@ -7,13 +7,13 @@ trait TableConfig
     /**
      * @var array
      */
-    protected $parentTableAttribute = [];
+    protected $parentTableAttribute;
     /**
      * attribute for table tag
      *
      * @var array
      */
-    protected $tableAttribute = ["class" => "table table-striped"];
+    protected $tableAttribute;
 
     /**
      * attribute for thead tag
@@ -163,6 +163,29 @@ trait TableConfig
         $this->anyRowAttribute = $fallback;
 
         return $this;
+    }
+
+
+    /**
+     *
+     */
+    protected function setTableConf()
+    {
+        $this->parentTableAttribute = config('srkgridview.table.parentTableAttribute');
+
+        $this->tableAttribute = config('srkgridview.table.tableAttribute');
+
+        $this->theadAttribute = config('srkgridview.table.theadAttribute');
+
+        $this->tbodyAttribute = config('srkgridview.table.tbodyAttribute');
+
+        $this->trAttribute = config('srkgridview.table.trAttribute');
+
+        $this->thAttribute = config('srkgridview.table.thAttribute');
+
+        $this->tdAttribute = config('srkgridview.table.tdAttribute');
+
+        $this->hasRowIndex = config('srkgridview.table.hasRowIndex');
     }
 
 }
