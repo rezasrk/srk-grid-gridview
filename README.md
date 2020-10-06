@@ -11,7 +11,7 @@ this package help you to create dynamic html table by php language in framework 
 
 ` composer require srk-grid/gridview `
 
-` art vendor:publish --provider="SrkGrid\GridView\SrkGridViewProvider" `
+` php artisan vendor:publish --provider="SrkGrid\GridView\SrkGridViewProvider" `
 
 # Usage
 this package support eloquent and query builder of laravel 
