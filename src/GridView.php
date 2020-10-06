@@ -10,7 +10,7 @@ use SrkGrid\GridView\Table\Table;
 
 class GridView extends TableElement
 {
-    use  Options,Table, ExportExcel;
+    use  Options, Table, ExportExcel;
 
     /**
      * store result query from eloquent or query builder
@@ -46,13 +46,8 @@ class GridView extends TableElement
      */
     protected function makeGrid()
     {
-        $this->setTableConf();
+        $this->setDefaultConfigGrid();
 
-        $this->setExcelConf();
-
-        $this->setPaginateConf();
-
-        /** process element table for disable column create head column */
         $this->coreProcess();
 
         $this->downloadExcel();
@@ -60,6 +55,11 @@ class GridView extends TableElement
         return $this->setParentTable();
     }
 
+    /**
+     * set Parent for grid
+     *
+     * @return string
+     */
     protected function setParentTable()
     {
         /** @var RawHtml $rawHtml */
@@ -68,5 +68,18 @@ class GridView extends TableElement
         $table = $this->createButtonExcel() . $this->createTable();
 
         return $rawHtml->startDiv($this->parentTableAttribute, $table)->endDiv()->getHtml();
+    }
+
+    /**
+     * Set default config for grid
+     */
+    protected function setDefaultConfigGrid()
+    {
+        $this->setTableConf();
+
+        $this->setExcelConf();
+
+        $this->setPaginateConf();
+
     }
 }
