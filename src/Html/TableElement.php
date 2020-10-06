@@ -82,11 +82,12 @@ class TableElement
      * create td html tag
      *
      * @param $innerHtml
+     * @param $attribute
      * @return string
      */
-    protected function td($innerHtml)
+    protected function td($innerHtml, $attribute = null)
     {
-        $attr = Helper::getAttribute($this->tdAttribute);
+        $attr = !empty($attribute) ?  Helper::getAttribute($attribute) :  Helper::getAttribute($this->tdAttribute);
 
         return "<td  {$attr}>" . $innerHtml . "</td>";
     }

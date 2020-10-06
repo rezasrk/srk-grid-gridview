@@ -65,6 +65,13 @@ trait TableConfig
     protected $hasRowIndex = false;
 
     /**
+     * Message when data not result
+     *
+     * @var string
+     */
+    protected $messageEmpty;
+
+    /**
      * @param array $attribute
      * @return $this
      */
@@ -87,16 +94,6 @@ trait TableConfig
         $this->hasRowIndex = true;
 
         return $this;
-    }
-
-    /**
-     * message empty  data
-     *
-     * @return string
-     */
-    protected function messageEmpty()
-    {
-        return "empty data!";
     }
 
 
@@ -186,6 +183,8 @@ trait TableConfig
         $this->tdAttribute = config('srkgridview.table.tdAttribute');
 
         $this->hasRowIndex = config('srkgridview.table.hasRowIndex');
+
+        $this->messageEmpty = config('srkgridview.table.messageEmpty');
     }
 
 }

@@ -21,7 +21,8 @@ trait Options
     protected function emptyTd()
     {
         $count = count($this->bodyTable);
-        return $this->tr($this->td($this->messageEmpty(), "colspan={$count}"));
+
+        return $this->tr($this->td($this->messageEmpty, ["colspan" => $count]));
     }
 
 

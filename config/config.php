@@ -39,6 +39,10 @@ return [
          * Set increment number row for table
          */
         'hasRowIndex' => false,
+        /**
+         * Set Default message when data empty result
+         */
+        'messageEmpty' => 'empty data!'
     ],
 
 
@@ -89,11 +93,11 @@ return [
         /**
          * Set default increment row table
          */
-        'increment' => '1',
+        'increment' => 1,
         /**
          * Set default paginate number
          */
-        'paginate' => '20',
+        'paginate' => 20,
         /**
          * Set default attribute for patent link paginate
          */
