@@ -42,7 +42,7 @@ return [
         /**
          * Set Default message when data empty result
          */
-        'messageEmpty' => 'empty data!'
+        'messageEmpty' => 'empty data '
     ],
 
 
