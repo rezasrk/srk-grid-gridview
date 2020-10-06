@@ -15,7 +15,8 @@
   },
   "minimum-stability": "dev",
   "require": {
-    "php": "^7.0"
+    "php": "^7.0",
+    "phpoffice/phpspreadsheet": "^1.14"
   },
   "extra": {
     "laravel": {
