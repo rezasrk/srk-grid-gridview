@@ -80,4 +80,9 @@ this key for hidden column if  ` ['disableExcel'=>false] `
 this method create body of table and it takes tow type value  ` string ` and ` closure `  as input
 
 
+### ->renderGrid()
+
+this method terminate create table 
+
+
 
