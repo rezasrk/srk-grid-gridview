@@ -13,15 +13,14 @@ this package help you to create dynamic html table by php language in framework 
 
 ` php artisan vendor:publish --provider="SrkGrid\GridView\SrkGridViewProvider" `
 
-# Usage
-this package support eloquent and query builder of laravel 
+# Quick Start
 
-create object from GridView and pass query builder or eloquent of laravel without terminate method like paginate , get , first .
+create table by blow code 
 
-```php
-$date = new GridView(User::query())
+```php 
+$grid = new GridView(User::query())
 
-$grid = $data->headerColumns([
+$table = $grid->headerColumns([
     ['head'=>'name],
     ['head'=>'username'],
 ])
@@ -31,91 +30,49 @@ $grid = $data->headerColumns([
 
 ```
 
-and put $grid yourself application  view
-```php
-{!! $grid !!}
-```
-### custom number paginate
-by default number of paginate for gird equal 20
-but if you need to change it use  
-```php 
-setPaginateNumber(customNumber) 
-``` 
 
-
-### use closure in method addColumns
-if use eloquent relation you  need to use closure in method addColumns for show result 
-```php
-->addColumns(function($query){
-    $query->person->national_code;
-})
-``` 
-
-
-### disable column
-if you need to disable column can use 
-```php
-disable=>false 
-```
-in headColumns method
+and put $table yourself view
 
 ```php
-->headerColumns([
-    ['head'=>'name],
-    ['head'=>'username','disable'=>false],
-    ['head'=>'national code'],
-])
+{!! $table !!}
 ```
 
+# Introduction
 
-### use row increment
-if you need to use row increment can you use 
-```php
-->rowIndex()
-```
+you can customize default config in file srkgridview.php in directory config in laravel 
+these config include three part  (table - excel - paginate) 
 
-
-### set attribute for any row 
-
-if you need to set attribute for any row can use 
-
-```php
-->anyRowAttribute(function($query){
-    if($query->email == 'admin')
-        return "style='background-color:red'";
-})
-```
-the result above code any row to email equal admin  set background color red 
+also for any table you can change all config exists in file srkgridview.php
 
 
-### add attribute for thead tbody table
+# Instructions
+
+you must call three method to create table ` ->headerColumns() ` and ` ->addColumns() ` and final ` ->renderGrid() `
+
+### ->headerColumns()
+
+this method  create header of table at the its received array inside another array as input 
  
-set attribute for table
-```php
-setTableAttribute(['class'=>'class-name','id'=>'id-name'])
-```
+at the moment internal array has three key 
+
+` head ` and ` disbale ` and ` disableExcel `
+
+##### head
+
+this key for create name of column 
+
+##### disable
+
+this key for hidden column if `  ['disable'=>false] `
+
+##### disableExcel 
+
+this key for hidden column if  ` ['disableExcel'=>false] `
+
+
+### ->addColumns()
  
-set attribute for thead 
-```php
-->setTrAttribute(['class' => 'class-name','id'='id-name'])
-``` 
-
-set attribute for tbody
-```php
-->setTheadAttribute(['class' => 'class-name','id'=>'id-name'])
-```
-
-
-
-
-### sort able columns
-if you need to sort data can add sortAble in head columns by property sort
-```php
-$data->headerColumns(['head'=>'username','sortAble'=>'username'])
-```
-
-
-
+this method create body of table and it takes tow type value  ` string ` and ` closure `  as input
 
 
 
