@@ -13,20 +13,20 @@ trait Paginate
      *
      * @var int
      */
-    protected $increment = 1;
+    protected $increment;
     /**
      * number paginate
      *
      * @var int
      */
-    protected $paginate = 20;
+    protected $paginate;
 
     /**
      * Default parent attribute for paginate link
      *
      * @var array
      */
-    protected $parentPaginateAttribute = ['class' => 'ajax-grid mt-2 ml-2'];
+    protected $parentPaginateAttribute;
 
     /**
      * get number increment in any row
@@ -97,5 +97,15 @@ trait Paginate
         $this->parentPaginateAttribute = collect($this->parentPaginateAttribute)->merge($attribute)->toArray();
 
         return $this;
+    }
+
+    protected function setPaginateConf()
+    {
+        $this->increment = config('srkgridview.paginate.increment');
+
+        $this->paginate = config('srkgridview.paginate.paginate');
+
+        $this->parentPaginateAttribute = config('srkgridview.paginate.parentPaginateAttribute');
+
     }
 }

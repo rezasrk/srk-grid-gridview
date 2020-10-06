@@ -47,6 +47,11 @@ class GridView extends TableElement
     protected function makeGrid()
     {
         $this->setTableConf();
+
+        $this->setExcelConf();
+
+        $this->setPaginateConf();
+
         /** process element table for disable column create head column */
         $this->coreProcess();
 

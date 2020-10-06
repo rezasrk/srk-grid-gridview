@@ -10,30 +10,27 @@ trait ExcelConfig
      *
      * @var bool
      */
-    protected $createExcel = false;
+    protected $createExcel;
     /**
      * Store file name excel
      *
      * @var string
      */
-    protected $fileName = 'sample';
+    protected $fileName;
 
     /**
      * alphabet english for fill  excel cell
      *
      * @var array
      */
-    protected $alphabet = [
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-        'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-    ];
+    protected $alphabet;
 
     /**
      * attribute for parent button export excel
      *
      * @var array
      */
-    protected $parentButtonAttr = ['class' => 'col mt-2 mb-2'];
+    protected $parentButtonAttr;
 
 
     /**
@@ -41,21 +38,21 @@ trait ExcelConfig
      *
      * @var array
      */
-    protected $buttonExcelAttribute = ['class' => 'btn btn-success'];
+    protected $buttonExcelAttribute;
 
     /**
      * inner html button export excel
      *
      * @var string
      */
-    protected $innerHtmlButtonExcel = "Export excel";
+    protected $innerHtmlButtonExcel;
 
     /**
      * set direction excel file
      *
      * @var string
      */
-    protected $excelDirection = 'ltr';
+    protected $excelDirection;
 
     /**
      * set header column for excel if change priority fill excel column
@@ -129,5 +126,23 @@ trait ExcelConfig
         $this->excelDirection = $direction;
 
         return $this;
+    }
+
+
+    protected function setExcelConf()
+    {
+        $this->createExcel = config('srkgridview.excel.createExcel');
+
+        $this->fileName = config('srkgridview.excel.fileName');
+
+        $this->alphabet = config('srkgridview.excel.alphabet');
+
+        $this->parentButtonAttr = config('srkgridview.excel.parentButtonAttr');
+
+        $this->buttonExcelAttribute = config('srkgridview.excel.buttonExcelAttribute');
+
+        $this->innerHtmlButtonExcel = config('srkgridview.excel.innerHtmlButtonExcel');
+
+        $this->excelDirection = config('srkgridview.excel.excelDirection');
     }
 }
