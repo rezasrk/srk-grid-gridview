@@ -1,0 +1,22 @@
+<?php
+
+namespace DummyNamespace;
+
+use SrkGrid\GridView\BaseGrid;
+use SrkGrid\GridView\GridView;
+
+class DummyGrid implements BaseGrid
+{
+    /**
+     * Render method for get html view result
+     *
+     * @param GridView $grid
+     * @param $data
+     * @param $parameters
+     * @return mixed
+     */
+    public function render($grid, $data, $parameters = null)
+    {
+        return $grid;
+    }
+}

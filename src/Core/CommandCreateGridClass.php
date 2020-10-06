@@ -3,148 +3,140 @@
 namespace SrkGrid\GridView\Core;
 
 
-trait CommandCreateGridClass
+use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Input\InputArgument;
+
+class CommandCreateGridClass extends GeneratorCommand
 {
     /**
-     * class name
+     * The name and signature of the console command.
      *
      * @var string
      */
-    protected $className;
+    protected $name = 'make:grid {name}';
 
     /**
-     * @var array
-     */
-    protected $arrayDirectory;
-
-    /**
-     * @var string
-     */
-    protected $getFullDirectory;
-
-    /**
-     * @var string
-     */
-    protected $startPath = 'app/Grid/';
-    /**
-     * @var string
-     */
-    protected $getDirectory;
-
-    /**
-     * start create class grid
-     */
-    public function createGrid()
-    {
-        $this->structureDirectory();
-    }
-
-    /**
-     * create structure directory grid
-     */
-    protected function structureDirectory()
-    {
-        $this->arrayDirectory = (explode('/', $this->argument('name')));
-
-        $countStructure = count($this->arrayDirectory);
-
-        $this->setClassName($countStructure);
-
-        $this->makeDirectory();
-
-        $this->makeFile();
-    }
-
-    /**
+     * The console command description.
      *
-     * @param $countStructure
+     * @var string
      */
-    protected function setClassName($countStructure)
-    {
-        $this->className = $this->arrayDirectory[$countStructure - 1];
-
-        unset($this->arrayDirectory[$countStructure - 1]);
-    }
+    protected $description = 'Create a new GridView';
 
     /**
-     * create directory grid
+     * The type of class being generated.
+     *
+     * @var string
      */
-    protected function makeDirectory()
-    {
-        $this->getDirectory = implode('/', $this->arrayDirectory);
-
-        $this->getFullDirectory = base_path($this->startPath) . $this->getDirectory . '/';
-
-        if (!is_dir($this->getFullDirectory))
-            mkdir($this->getFullDirectory, 0777, true);
-
-    }
+    protected $type = 'GridView';
 
     /**
-     * make class grid
+     * The name of class being generated.
+     *
+     * @var string
      */
-    protected function makeFile()
+    private $gridViewClass;
+
+    /**
+     * The name of class being generated.
+     *
+     * @var string
+     */
+    private $model;
+
+    /**
+     * Execute the console command.
+     *
+     * @return bool|null
+     */
+    public function fire()
     {
-        $file = $this->getFullDirectory . $this->className . '.php';
 
-        if (!file_exists($file)) {
+        $this->setGridViewClass();
 
-            $class = fopen($file, "w");
+        $path = $this->getPath($this->gridViewClass);
 
-            fwrite($class, "<?php\n\n" . $this->contentClass());
+        if ($this->alreadyExists($this->getNameInput())) {
+            $this->error($this->type . ' already exists!');
 
-            fclose($class);
-
-            $this->info('this grid created on ' . $this->startPath.$this->getDirectory.'/'.$this->className.'.php');
-
-        } else {
-            $this->error('this file already created');
+            return false;
         }
 
+        $this->makeDirectory($path);
+
+        $this->files->put($path, $this->buildClass($this->gridViewClass));
+
+        $this->info($this->type . ' created successfully.');
+
+        $this->line("<info>Created Repository :</info> $this->gridViewClass");
     }
 
     /**
-     * fill content class
+     * Set setGridViewClass class name
      *
-     * @return string
+     * @return  void
      */
-    protected function contentClass()
+    private function setGridViewClass()
     {
-        $namespace = 'namespace App\GridView\\' . str_replace('/', '\\', $this->getDirectory) . ";\n\n";
+        $name = ucwords(strtolower($this->argument('name')));
 
-        $use = "use App\Library\GridView\GridView;\nuse App\Library\GridView\BaseGrid;\n\n";
+        $this->model = $name;
 
-        $className = 'class ' . $this->className . ' implements BaseGrid' . "\n";
+        $gridViewClass = $this->parseName($name);
 
-        $start = "{";
+        $this->gridViewClass =   $gridViewClass . 'GridView';
 
-        $methodRender = $this->makeMethodRender();
-
-        $end = '}';
-
-        return $namespace . $use . $className . $start . $methodRender . $end;
+        return $this;
     }
 
     /**
-     * render method
+     * Replace the class name for the given stub.
+     *
+     * @param  string $stub
+     * @param  string $name
+     * @return string
+     */
+    protected function replaceClass($stub, $name)
+    {
+        $stub = parent::replaceClass($stub, $name);
+
+        $nameArray = explode('/',$this->argument('name'));
+
+        $className = $nameArray[count($nameArray) -1];
+
+        return str_replace('DummyGrid', $className, $stub);
+    }
+
+    /**
+     *
+     * Get the stub file for the generator.
      *
      * @return string
      */
-    protected function makeMethodRender()
+    protected function getStub()
     {
-        return '
-     /**
-     * Render method for get html view result
-     *
-     * @param GridView $grid
-     * @param $data
-     * @param $localization
-     * @return mixed
-     */
-    public function render($grid, $data, $localization = null)
-    {
-        return $grid;
+        return base_path('/vendor/srk-grid/gridview/stub/gridview.stub');
     }
-         ' . "\n";
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace . '\Grid';
+    }
+
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return [
+            ['name', InputArgument::REQUIRED, 'The name of the gird class.'],
+        ];
     }
 }
