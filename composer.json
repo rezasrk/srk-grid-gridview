@@ -24,5 +24,8 @@
         "SrkGrid\\GridView\\SrkGridViewProvider"
       ]
     }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
   }
 }
