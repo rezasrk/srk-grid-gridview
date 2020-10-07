@@ -72,7 +72,7 @@ class UserGrid implements BaseGrid
 }
 ``` 
 
-call blow  ` Grid::make() `  in method index or any other method you want to display table   
+call ` Grid::make() `  in method index or any other method you want to display table in controller   
 
 ```php 
 $data = User::query()
