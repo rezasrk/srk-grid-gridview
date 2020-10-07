@@ -7,11 +7,30 @@ this package help you to create dynamic html table by php language in framework 
     php >= 7.x
     phpspreadsheet >= 1.14
     
+# Introduction
+
+this package compatible by eloquent and query builder of laravel 
+
+**you must write query by eloquent or query builder without terminate method like ` paginate() ` or ` get() ` or ` all() `  or etc**
+ 
+by default next run command
+ 
+` php artisan vendor:publish --provider="SrkGrid\GridView\SrkGridViewProvider" `
+  
+automatic create srkgridview.php in directory config in laravel
+all table config exists in php file and you can customize default config  
+
+this config include three part  (table - excel - paginate) for set attribute on html element of table
+and excel element and paginate element and  set paginate number for result query and etc 
+
+also for any table you can change all config exists in file srkgridview.php
+    
 # Installation
 
 ` composer require srk-grid/gridview `
 
 ` php artisan vendor:publish --provider="SrkGrid\GridView\SrkGridViewProvider" `
+
 
 # Quick Start
 
@@ -37,23 +56,7 @@ and put $table yourself view
 {!! $table !!}
 ```
 
-# Introduction
 
-this package compatible by eloquent and query builder of laravel 
-
-**you must write query by eloquent or query builder without terminate method like ` paginate() ` or ` get() ` or ` all() `  or etc**
- 
-by default next run command
- 
-` php artisan vendor:publish --provider="SrkGrid\GridView\SrkGridViewProvider" `
-  
-automatic create srkgridview.php in directory config in laravel
-all table config exists in php file and you can customize default config  
-
-this config include three part  (table - excel - paginate) for set attribute on html element of table
-and excel element and paginate element and  set paginate number for result query and etc 
-
-also for any table you can change all config exists in file srkgridview.php
 
 
 # Instructions
