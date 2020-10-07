@@ -4,13 +4,12 @@ namespace SrkGrid\GridView;
 
 use SrkGrid\GridView\Excel\ExportExcel;
 use SrkGrid\GridView\Html\RawHtml;
-use SrkGrid\GridView\Html\TableElement;
 use SrkGrid\GridView\Options\Options;
 use SrkGrid\GridView\Table\Table;
 
-class GridView extends Table
+class GridView
 {
-    use  Options, TableElement, ExportExcel;
+    use  Table,Options, ExportExcel;
 
     /**
      * store result query from eloquent or query builder
@@ -36,6 +35,13 @@ class GridView extends Table
     public function renderGrid()
     {
         return $this->makeGrid();
+
+        $this->setTableConf();
+
+        $this->setExcelConf();
+
+        $this->setPaginateConf();
+
     }
 
 
@@ -46,8 +52,6 @@ class GridView extends Table
      */
     protected function makeGrid()
     {
-        $this->setDefaultConfigGrid();
-
         $this->coreProcess();
 
         $this->downloadExcel();
@@ -70,16 +74,5 @@ class GridView extends Table
         return $rawHtml->startDiv($this->parentTableAttribute, $table)->endDiv()->getHtml();
     }
 
-    /**
-     * Set default config for grid
-     */
-    protected function setDefaultConfigGrid()
-    {
-        $this->setTableConf();
 
-        $this->setExcelConf();
-
-        $this->setPaginateConf();
-
-    }
 }
