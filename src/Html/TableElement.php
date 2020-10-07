@@ -10,8 +10,6 @@ use SrkGrid\GridView\Helper;
 
 class TableElement
 {
-    use TableConfig;
-
     /**
      * create table html tag
      *

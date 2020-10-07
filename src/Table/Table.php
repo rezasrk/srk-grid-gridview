@@ -2,14 +2,13 @@
 
 namespace SrkGrid\GridView\Table;
 
-use SrkGrid\GridView\Factory;
-use SrkGrid\GridView\Html\RawHtml;
+use SrkGrid\GridView\Core\TableConfig;
 use SrkGrid\GridView\ProcessData\Paginate;
 use SrkGrid\GridView\ProcessElement\ProcessElement;
 
 trait Table
 {
-    use Paginate, ProcessElement;
+    use Paginate, ProcessElement,TableConfig;
 
     /**
      * store string html tag table
