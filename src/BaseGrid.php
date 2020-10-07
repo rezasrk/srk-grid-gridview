@@ -10,8 +10,8 @@ interface BaseGrid
      *
      * @param GridView $grid
      * @param $data
-     * @param $localization
+     * @param $parameters
      * @return mixed
      */
-    public function render($grid,$data, $localization = null);
+    public function render($grid,$data, $parameters = null);
 }

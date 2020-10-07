@@ -17,8 +17,10 @@ by default next run command
  
 ` php artisan vendor:publish --provider="SrkGrid\GridView\SrkGridViewProvider" `
   
-automatic create srkgridview.php in directory config in laravel
+create automatic artisan command ` php artisan make:grid  GridName ` 
+and  srkgridview.php in directory config in laravel
 all table config exists in php file and you can customize default config  
+
 
 this config include three part  (table - excel - paginate) for set attribute on html element of table
 and excel element and paginate element and  set paginate number for result query and etc 
@@ -34,29 +36,55 @@ also for any table you can change all config exists in file srkgridview.php
 
 # Quick Start
 
-create table by blow code 
+run command 
+`
+php artisan make:gird UserGrid 
+`
+next run command is created class **UserGrid** in app/Grid directory
 
 ```php 
-$grid = new GridView(User::query())
+namespace App\Grid;
 
-$table = $grid->headerColumns([
-    ['head'=>'name],
-    ['head'=>'username'],
-])
-->addColumns('name')
-->addColumns('username')
-->renderGrid();
+use SrkGrid\GridView\BaseGrid;
+use SrkGrid\GridView\GridView;
+
+class UserGrid implements BaseGrid
+{
+    /**
+     * Render method for get html view result
+     *
+     * @param GridView $grid
+     * @param $data
+     * @param $parameters
+     * @return mixed
+     */
+    public function render($grid, $data, $parameters = null)
+    {
+        return $grid->headerColumns([
+                   ['head'=>'name],
+                   ['head'=>'username'],
+               ])
+               ->addColumns('name')
+               ->addColumns('username')
+               ->renderGrid();
+    }
+}
+``` 
+
+call blow method in self controller  
+
+```php 
+$data = User::query()
+
+$view = Grid::make($data,\App\Grid\UserGrid::class);
 
 ```
 
+and render ` $view ` in blade view 
 
-and put $table yourself view
-
-```php
-{!! $table !!}
-```
-
-
+```php 
+{!! $view !!}
+``` 
 
 
 # Instructions
