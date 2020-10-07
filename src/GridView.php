@@ -9,7 +9,7 @@ use SrkGrid\GridView\Table\Table;
 
 class GridView
 {
-    use  Table,Options, ExportExcel;
+    use  Table, Options, ExportExcel;
 
     /**
      * store result query from eloquent or query builder
@@ -25,6 +25,8 @@ class GridView
     public function __construct($data)
     {
         $this->data = $data;
+
+        $this->setDefaultConfigGrid();
     }
 
     /**
@@ -35,13 +37,6 @@ class GridView
     public function renderGrid()
     {
         return $this->makeGrid();
-
-        $this->setTableConf();
-
-        $this->setExcelConf();
-
-        $this->setPaginateConf();
-
     }
 
 
@@ -74,5 +69,12 @@ class GridView
         return $rawHtml->startDiv($this->parentTableAttribute, $table)->endDiv()->getHtml();
     }
 
+    protected function setDefaultConfigGrid()
+    {
+        $this->setTableConf();
 
+        $this->setExcelConf();
+
+        $this->setPaginateConf();
+    }
 }
