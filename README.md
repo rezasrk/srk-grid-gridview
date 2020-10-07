@@ -103,7 +103,7 @@ at the moment internal array has three key
 
 #### head
 
-this key for create name of column 
+this key for create name of column ` ['head'=>'full name'] `
 
 #### disable
 
@@ -118,7 +118,23 @@ this key for hidden column in excel  if  ` ['disableExcel'=>false] `
  
 this method create body of table and it takes tow type value  ` string ` and ` closure `  as input
 
+#### use type string
+ 
+```php
+->addColumns('username') 
+ ```
+ 
+#### use type closure
 
+when use relation in eloquent laravel result query is nested object 
+you can use closure for access to nested object  like
+
+```php
+
+->addColumns(function($query){
+    return $query->methodRelation->nameColumn
+})
+```
 
 
 ### ->renderGrid()
