@@ -19,7 +19,7 @@ by default next run command
   
 create automatic artisan command ` php artisan make:grid  GridName ` 
 and  srkgridview.php in directory config in laravel
-all table config exists in php file and you can customize default config  
+all table config exists in this php file and you can customize default config  
 
 
 this config include three part  (table - excel - paginate) for set attribute on html element of table
@@ -37,9 +37,8 @@ also for any table you can change all config exists in file srkgridview.php
 # Quick Start
 
 run command 
-`
-php artisan make:gird UserGrid 
-`
+`php artisan make:gird UserGrid `
+
 next run command is created class **UserGrid** in app/Grid directory
 
 ```php 
@@ -63,15 +62,17 @@ class UserGrid implements BaseGrid
         return $grid->headerColumns([
                    ['head'=>'name],
                    ['head'=>'username'],
+                   ['head'=>'email'],
                ])
                ->addColumns('name')
                ->addColumns('username')
+               ->addColumns('email')
                ->renderGrid();
     }
 }
 ``` 
 
-call blow method in self controller  
+call blow  ` Grid::make() `  in method index or any other method you want to display table   
 
 ```php 
 $data = User::query()
@@ -90,10 +91,11 @@ and render ` $view ` in blade view
 # Instructions
 
 you must call three method to create table ` ->headerColumns() ` and ` ->addColumns() ` and final ` ->renderGrid() `
+the other method are optional
 
 ### ->headerColumns()
 
-this method  create header of table its received array inside another array as input 
+this method  create header of table its given array inside another array as input 
  
 at the moment internal array has three key 
 
@@ -109,12 +111,14 @@ this key for hidden column if `  ['disable'=>false] `
 
 #### disableExcel 
 
-this key for hidden column if  ` ['disableExcel'=>false] `
+this key for hidden column in excel  if  ` ['disableExcel'=>false] `
 
 
 ### ->addColumns()
  
 this method create body of table and it takes tow type value  ` string ` and ` closure `  as input
+
+
 
 
 ### ->renderGrid()
