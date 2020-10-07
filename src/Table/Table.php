@@ -6,7 +6,7 @@ use SrkGrid\GridView\Core\TableConfig;
 use SrkGrid\GridView\ProcessData\Paginate;
 use SrkGrid\GridView\ProcessElement\ProcessElement;
 
-trait Table
+class Table
 {
     use Paginate, ProcessElement,TableConfig;
 

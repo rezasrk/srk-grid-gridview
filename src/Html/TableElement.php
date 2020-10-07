@@ -4,11 +4,10 @@
 namespace SrkGrid\GridView\Html;
 
 
-use SrkGrid\GridView\Core\TableConfig;
 use SrkGrid\GridView\Helper;
 
 
-class TableElement
+trait TableElement
 {
     /**
      * create table html tag

@@ -8,9 +8,9 @@ use SrkGrid\GridView\Html\TableElement;
 use SrkGrid\GridView\Options\Options;
 use SrkGrid\GridView\Table\Table;
 
-class GridView extends TableElement
+class GridView extends Table
 {
-    use  Options, Table, ExportExcel;
+    use  Options, TableElement, ExportExcel;
 
     /**
      * store result query from eloquent or query builder
