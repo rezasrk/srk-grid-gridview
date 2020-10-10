@@ -68,10 +68,13 @@ trait ExportExcel
     {
         $this->spreadsheet();
 
-        collect($this->headerExcelName)->each(function ($v, $k) {
+        $i = 0;
 
-            $this->sheet->setCellValue($this->alphabet[($k)] . '1', $v);
+        collect($this->headerExcelName)->each(function ($v) use (&$i) {
 
+            $this->sheet->setCellValue($this->alphabet[$i] . '1', $v);
+
+            $i++;
         });
     }
 
