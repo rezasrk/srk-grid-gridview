@@ -49,7 +49,7 @@ trait Table
     {
         $td = "";
         foreach ($this->bodyTable as $tdTbl) {
-            if (is_array($tdTbl) && isset($tdTbl['incrementRow']))
+            if (is_array($tdTbl) && isset($tdTbl['incrementRow']) && !$this->isTerminateGet)
                 $td .= $this->td($tdTbl['incrementRow'] + $this->increment);
             else
                 $td .= $this->td($tdTbl instanceof \Closure ? call_user_func($tdTbl, $data) : ($data->$tdTbl));

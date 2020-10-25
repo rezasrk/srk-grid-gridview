@@ -20,6 +20,10 @@ trait Paginate
      * @var int
      */
     protected $paginate;
+    /**
+     * @var bool
+     */
+    protected $isTerminateGet = false;
 
     /**
      * Default parent attribute for paginate link
@@ -34,7 +38,7 @@ trait Paginate
      */
     protected function incrementRow()
     {
-        if ($this->hasRowIndex)
+        if ($this->hasRowIndex && !$this->isTerminateGet)
             array_unshift($this->bodyTable,
                 ["incrementRow" => $this->data->perPage() * ($this->data->currentPage() - 1)]);
     }
@@ -48,8 +52,9 @@ trait Paginate
     {
         /** @var RawHtml $rawHtml */
         $rawHtml = Factory::make(RawHtml::class);
-
-        $links = $rawHtml->startDiv($this->parentPaginateAttribute, $this->data->appends(request()->query()))->endDiv()->getHtml();
+        $links = "";
+        if (!$this->isTerminateGet)
+            $links = $rawHtml->startDiv($this->parentPaginateAttribute, $this->data->appends(request()->query()))->endDiv()->getHtml();
 
         return $links;
     }
@@ -59,7 +64,9 @@ trait Paginate
      */
     protected function paginate()
     {
-        $this->data = $this->data->paginate($this->paginate);
+        $this->isTerminateGet ?
+            $this->data = $this->data->get() :
+            $this->data = $this->data->paginate($this->paginate);
     }
 
     /**
@@ -107,5 +114,17 @@ trait Paginate
 
         $this->parentPaginateAttribute = config('srkgridview.paginate.parentPaginateAttribute');
 
+    }
+
+    /**
+     * Set get() method for terminate
+     *
+     * @return $this
+     */
+    public function setTerminateGet()
+    {
+        $this->isTerminateGet = true;
+
+        return $this;
     }
 }
