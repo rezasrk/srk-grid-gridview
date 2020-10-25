@@ -25,7 +25,7 @@ trait Table
      */
     protected function createHeadTable()
     {
-        if (!empty($this->headerRowIndex))
+        if (!empty($this->headerRowIndex) && !$this->isTerminateGet)
             $this->headNameColumns = array_merge($this->headerRowIndex, $this->headNameColumns);
 
         $th = "";
